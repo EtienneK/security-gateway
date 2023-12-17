@@ -52,13 +52,13 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <scope>annotationProcessor</scope>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <scope>annotationProcessor</scope>
+      <optional>true</optional>
     </dependency>
 
   </dependencies>
@@ -83,7 +83,7 @@
         <configuration>
           <excludeDevtools>true</excludeDevtools>
           <image>
-            <name>etiennek/hac:latest</name>
+            <name>etiennek/security-gateway:latest</name>
           </image>
         </configuration>
       </plugin>
