@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: echo
+        uri: https://www.example.com
+        predicates:
+        - Path=/**
+        filters:
+        - OAuth2Attribute=id,5174409
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: XXX
+            client-secret: YYY
