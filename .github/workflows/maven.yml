@@ -42,7 +42,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Docker Push
-      uses: docker image push etiennek/security-gateway
+      run: docker image push etiennek/security-gateway
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
