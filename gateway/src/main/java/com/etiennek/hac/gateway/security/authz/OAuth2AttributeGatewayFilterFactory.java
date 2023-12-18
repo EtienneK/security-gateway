@@ -44,12 +44,12 @@ public class OAuth2AttributeGatewayFilterFactory
                         return complete(exchange, HttpStatus.BAD_REQUEST);
                     }
 
-                    var attributeValue = ((OAuth2AuthenticatedPrincipal) principal).getAttribute(config.name);
-                    if (attributeValue instanceof Number) {
-                        attributeValue = attributeValue.toString();
+                    final var attributeValue = ((OAuth2AuthenticatedPrincipal) principal).getAttribute(config.name);
+                    if (attributeValue == null) {
+                        return complete(exchange, HttpStatus.FORBIDDEN);
                     }
 
-                    if (!(attributeValue instanceof String) || !((String) attributeValue).matches(config.regexp)) {
+                    if (!attributeValue.toString().matches(config.regexp)) {
                         return complete(exchange, HttpStatus.FORBIDDEN);
                     }
 
@@ -58,7 +58,7 @@ public class OAuth2AttributeGatewayFilterFactory
     }
 
     private Mono<Void> complete(ServerWebExchange exchange, HttpStatus status) {
-        var response = exchange.getResponse();
+        final var response = exchange.getResponse();
         response.setStatusCode(status);
         return response.setComplete();
     }

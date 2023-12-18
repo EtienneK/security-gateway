@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -61,10 +62,14 @@ public class GatewayApplication {
     }
 
     @Bean
-    InMemoryReactiveClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties properties) {
+    ReactiveClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties properties) {
         List<ClientRegistration> registrations = new ArrayList<>(
                 new OAuth2ClientPropertiesMapper(properties).asClientRegistrations().values());
-        return new InMemoryReactiveClientRegistrationRepository(registrations);
+        if (!registrations.isEmpty()) {
+            return new InMemoryReactiveClientRegistrationRepository(registrations);
+        } else {
+            return (registrationId) -> Mono.empty();
+        }
     }
 
 }

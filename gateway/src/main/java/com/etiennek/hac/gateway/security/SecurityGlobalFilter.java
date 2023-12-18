@@ -75,7 +75,8 @@ public class SecurityGlobalFilter implements GlobalFilter, Ordered {
         }
 
         if (secProps.isOauth2Login()) {
-            http.oauth2Login(withDefaults())
+            http
+                    .oauth2Login(withDefaults())
                     .oauth2Client(withDefaults()) // TODO: Is this needed?
                     .exceptionHandling(e -> e.authenticationEntryPoint((exchange, ex) -> {
                         if (exchange.getRequest().getHeaders().getAccept().contains(MediaType.APPLICATION_JSON)) {
@@ -106,15 +107,15 @@ public class SecurityGlobalFilter implements GlobalFilter, Ordered {
                 http.headers(h -> h.frameOptions(f -> f.mode(headerProps.getFrameOptions())));
             }
 
-            if (disabledHeaders.contains("frameOptions")) {
+            if (disabledHeaders.contains("cache")) {
                 http.headers(h -> h.cache(c -> c.disable()));
             }
         } else {
             http.headers(h -> h.disable());
         }
 
-        http.csrf(c -> c.disable())
-                // .headers(h -> h.disable())
+        http
+                .csrf(c -> c.disable())
                 .logout(l -> l.disable());
 
         return new WebFilterChainProxy(http.build());
